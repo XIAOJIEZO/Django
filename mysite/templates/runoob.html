@@ -1,0 +1,95 @@
+{% comment %}
+变量：
+    view：｛"HTML变量名" : "views变量名"｝
+    HTML：｛｛变量名｝｝
+{% endcomment %}
+<h1>{{ hello }}</h1>
+
+{# 列表：可以用 .下标 取出对应元素 #}
+<p>{{ views_list }}</p>
+<p>{{ views_list.0 }}</p>
+
+{# 字典：可以用 .键 取出对应的值 #}
+<p>{{ views_dict }}</p>
+<p>{{ views_dict.name }}</p>
+
+{% comment %}
+过滤器：模板过滤器可以在变量被显示前修改它，过滤器使用管道字符
+语法：{{ 变量名 | 过滤器：可选参数 }}
+{% endcomment %}
+<p>
+    {{ name | lower }}                          {# 大写 #}
+    {{ name | first |upper }}                   {# 首字母大写 #}
+    {{ name | length }}                         {# 字符串长度 #}
+    {{ name | truncatewords:"3" }}              {# 显示前三个字符 #}
+    {{ name | default:"这是一个默认值" }}         {# 如果 views 传的变量的布尔值是 false，则使用指定的默认值 #}
+    {{ num | filesizeformat }}                  {# 以更易读的方式显示文件的大小（即'13 KB', '4.1 MB', '102 bytes'等 #}
+    {{ date | date:"Y-m-d H:m:s" }}              {# 根据给定格式对一个日期变量进行格式化 #}
+</p>
+
+<p>
+{# if/else标签 #}
+{%if num > 90 and num <= 100 %}
+优秀
+{% elif num > 60 and num <= 90 %}
+合格
+{% else %}
+一边玩去～
+{% endif %}
+</p>
+
+<p>
+{# for标签 #}
+{% for i in views_list reversed %}       {# 给标签增加一个 reversed 使得该列表被反向迭代 #}
+        {{forloop.counter0}}
+{{ i }}
+{% endfor %}
+</p>
+
+<p>
+{# for标签遍历字典 #}
+{% for k, v in views_dict.items %}
+{{ k }} = {{ v }}
+{% endfor %}
+</p>
+
+{% comment %}
+    在 {% for %} 标签里可以通过 {{forloop}} 变量获取循环序号。
+    forloop.counter: 顺序获取循环序号，从 1 开始计算
+    forloop.counter0: 顺序获取循环序号，从 0 开始计算
+    forloop.revcounter: 倒叙获取循环序号，结尾序号为 1
+    forloop.revcounter0: 倒叙获取循环序号，结尾序号为 0
+    forloop.first（一般配合if标签使用）: 第一条数据返回 True，其他数据返回 False
+    forloop.last（一般配合if标签使用）: 最后一条数据返回 True，其他数据返回 False
+{% endcomment %}
+
+{# {% empty %} 从句：在循环为空的时候执行 #}
+{% for i in null_list %}
+{{ i }}
+{% empty %}
+    空空如也~~~
+{% endfor %}
+
+{# ifequal/ifnotequal 标签：比较两个值，当他们相等时，显示在 {% ifequal %} 和 {% endifequal %} 之中所有的值#}
+{% ifequal user currentuser %}
+    <h1>Welcome!</h1>
+{% else %}
+    <h1>SORRY!</h1>
+{% endifequal %}
+
+{# include 标签:{% include %} 标签允许在模板中包含其它的模板的内容 #}
+{% include "nav.html" %}
+
+{# csrf_token标签：csrf_token 用于form表单中，作用是跨站请求伪造保护 #}
+
+{% comment %}
+
+{% load my_tags %}
+{# 使用自定义过滤器 #}
+{{ 11|my_filter:22 }}
+
+{% endcomment %}
+
+{% load static %}
+{{ z_name }} <img src="{% static "images/zhake.jpg" %}" alt="zhake">
+
