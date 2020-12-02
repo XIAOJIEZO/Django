@@ -22,11 +22,12 @@ Including another URLconf
 
 from django.urls import path
 
-from . import views
+from . import views, testdb
 
 urlpatterns = [
     path(r'runoob/', views.runoob),
     path(r'runoob/demo/', views.runoob_demo),
     path(r'runoob/base/', views.base),
     path(r'runoob/extends_base/', views.base_extends),
+    path(r'testdb/', testdb.testdb),
 ]
