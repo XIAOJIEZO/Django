@@ -22,7 +22,7 @@ Including another URLconf
 
 from django.urls import path
 
-from . import views, testdb
+from . import views, testdb, search, search2
 
 urlpatterns = [
     path(r'runoob/', views.runoob),
@@ -30,4 +30,7 @@ urlpatterns = [
     path(r'runoob/base/', views.base),
     path(r'runoob/extends_base/', views.base_extends),
     path(r'testdb/', testdb.testdb),
+    path(r'search-form/', search.search_form),
+    path(r'search/', search.search),
+    path('search-post/', search2.search_post)
 ]
